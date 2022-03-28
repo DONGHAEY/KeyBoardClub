@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <script src="/socket.io/socket.io.js"></script>
+    <meta charset="UTF-8">
+    <title><%= room_key %>/<%= category_korean %> - 주제채팅</title>
+</head>
+<style>
+    .body {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    #messages li {
+        font-size: 15px;
+        font-weight: 500;
+    }
+    #msginput {
+        width:200px;
+        height: 20px;
+    }
+    #msgform button {
+        background-color: black;
+        color: white;
+        border:0;
+        width:210px;
+        height: 20px;
+        /* border-radius: 15px; */
+    }
+</style>
+<body onbeforeunload="leaveRoom();">
+    <header><%- include('head.ejs') %></header>
+    <div class="body">
+        <h1><%= category_korean %></h1>
+        <h2><%= room_key %></h2>
+        <h3 id="usercount"></h3>
+        <ul style="padding-left: 0;"id="messages" type="none">
+        </ul>
+        <form id="msgform">
+            <input placeholder="내용을 입력하세요" style="display:block" id="msginput" autocomplete="off" type="text">
+            <button type="submit">보내기</button>
+        </form>
+    </div>
+</body>
+<script>
+    let user = "<%= JSON.stringify(user) %>"
+    user = user.replaceAll('&#34;', '\"')
+    user = JSON.parse(user)
+
+    const categoryName = "<%= category %>"
+    const room_key = "<%= room_key %>"
+    var socket = io('/'+ categoryName);
+
+    socket.emit('joinRoom', room_key);
+
+    var msgform = document.getElementById('msgform');
+    // socket.on 함수로 서버에서 전달하는 신호를 수신
+    socket.on('usercount', (count) => {
+        var userCounter = document.getElementById('usercount');
+        userCounter.innerText = "현재 " + count + "명이 서버에 접속해있습니다.";
+    });
+
+    // 메시지 수신시 HTML에 메시지 내용 작성
+    socket.on('message', (msg) => {
+        var messageList = document.getElementById('messages');
+        var messageTag = document.createElement("li");
+        messageTag.innerText = msg;
+        messageList.appendChild(messageTag);
+    });
+
+    window.addEventListener('beforeunload', (event) => {
+        socket.emit('leaveRoom', room_key)
+    })
+
+    function leaveRoom() {
+        socket.emit('leaveRoom', room_key)
+    }
+
+    window.addEventListener('beforeunload', (event) => {
+        leaveRoom()
+    })
+    
+    if(user) {
+        msgform.onsubmit = (e) => {
+        e.preventDefault();
+        var msginput = document.getElementById('msginput');
+
+        // socket.emit으로 서버에 신호를 전달
+        socket.emit('message', {
+            room_key : room_key,
+            message : user.name + " : " + msginput.value,
+        });
+
+        msginput.value = "";
+    };
+    } else {
+        msgform.innerHTML = "<a href='/login'>함께하려면 로그인하기</a> "
+    }
+</script>
+</html>

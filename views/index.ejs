@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title><%= category_korean %> - 주제채팅</title>
+</head>
+<style>
+    .body {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    #messages li {
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .room {
+        background-color: beige;
+        width:200px;
+        height:70px;
+        border-radius: 30px;
+    }
+
+    .room {
+        cursor: pointer;
+    }
+</style>
+<body>
+    <header><%- include('head.ejs') %></header>
+    <div class="body">
+        <h1><%= category_korean %></h1>
+        <h2 id="usercount"></h2>
+        <ul style="padding-left: 0;"id="messages" type="none">
+            <li><div class="room" onclick='location.href+="/new"'><h1>방만들기</h1></div></li>
+        </ul>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const roomName = "<%= category %>"
+        var socket = io('/'+ roomName);
+
+        // 메시지 수신시 HTML에 메시지 내용 작성
+        socket.on('room_key', (msg) => {
+            var messageList = document.getElementById('messages');
+            var messageTag = document.createElement("li");
+            messageTag.innerHTML = `<div class="room" onclick='location.href+="/${msg}"'><h1>${msg}</h1></div>`;
+            messageList.appendChild(messageTag);
+        });
+    </script>
+</body>
+</html>

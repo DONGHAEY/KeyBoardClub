@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+	<!-- <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap" rel="stylesheet"> -->
+    <title>bar</title>
+    <script src="https://kit.fontawesome.com/---.js" crossorigin="anonymous"></script>
+    <script src="main.js" defer></script><!--defer을 통해 코드를 받을 때까지 화면에 표시되지 않는 것을 방지-->
+</head>
+<style>
+.navbar{
+    display : flex; 
+    justify-content: space-between; /*중심축 배치 (현재는 중심축이 수평축)*/
+    align-items: center; /*반대축(현재는 반대축이 수직축)의 속성값 활용 */
+    background-color:#EDEDED;
+    padding : 8px 12px; /*위아래 8px, 양옆 12px*/
+}
+body {
+    margin : 0; /*바디태그 margin defalut값 때문에 흰선 발생. 이를 제거*/
+    font-family: 'Source Sans Pro';
+}
+a {
+    text-decoration: none;/*모든 ankor태그의 컨텐츠에는 defalut로 밑줄 존재. 이를 제거*/
+    color :black;
+    text-shadow: gray;
+    font-weight: bold;
+}
+.navbar__logo{
+    font-size: 24px;
+    color:white;
+    margin-left: 10px;
+}
+.navbar__logo i{
+    color : black;
+}
+.navbar__menu {
+    display: flex; /*메뉴를 일렬로 배치*/
+    list-style: none; /*ul태그의 점을 제거*/
+    padding-left: 0; /*패딩때문에 우측으로 치우쳐있는것을 되돌림*/
+}
+.navbar__menu li{
+    padding : 8px 12px; /*마우스 클릭영역확보*/   
+}
+.navbar__menu li:hover {
+    background-color: white;
+    border-radius: 20px; /*테두리 둥글게*/
+    cursor:pointer
+}
+.navbar__icons{
+    padding-left : 0px; /*가운데 정렬*/
+    list-style: none;
+    color : white;
+    display: flex;
+}
+.navbar__icons li {
+    padding : 8px 12px;
+}
+/*
+레이아웃을 반응형으로 만들때는 media쿼리 사용
+특정 사이즈 이하가 될 경우, 웹 사이트의 메뉴가 제대로 보이지 않음
+이럴때 메뉴바를 아래로 내려가도록 만들자.
+*/
+@media screen and (max-width:768px) {
+    /*로고,메뉴바가 수직으로 나오도록*/
+    .navbar {
+        flex-direction: column;
+        align-items : flex-start; /*로고,메뉴바 모두 왼쪽 정렬*/
+        padding : 8px 24px; /*hover시 한줄 가득 색상표시 안되도록 */
+    }
+    /*메뉴바가 한줄에 하나씩*/
+    .navbar__menu{
+        flex-direction: column;
+        align-items: center; /*메뉴바만 가운데 정렬 */
+        width : 100%; /*메뉴바의 가운데 정렬을 위해 너비를 늘림*/
+    }
+    /*메뉴바 hover시 컨텐츠박스가 아닌 한 줄에 색상표시 */
+    .navbar__menu li{
+        width: 100%;
+        text-align: center; /*text는 왼쪽 정렬이 기본값이므로 center로 수정*/
+    }
+    /*로고를 가운데로*/
+    .navbar__icons {
+        justify-content: center; /*로고는 현재 반대축이므로 justify-content 사용*/
+        width : 100%;
+    }
+}
+</style>
+<body>
+    <nav class="navbar">
+        <div style="text-align: center" class="navbar__logo">
+            <a style="font-weight: bolder;" href="/">▄▀▄▀▄<br>KeyboardPeople</a>
+        </div>
+        <!--일렬정렬위해 div태그보단 순서있는 ul태그 활용-->
+        <ul class="navbar__menu">
+            <li><a href="/hello">소개</a></li>
+            <li><a href="/hello">내 클럽&친구</a></li>
+            <li>
+                <div style="height:30px">
+                    <img style="width: 25px; border-radius: 30px;" src="data:image/png;base64,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" />
+                    <% if(user) { %>
+                        <a href="/logout" style="display:inline ; font-size: 15px;" class="user_name"><%= user.name %></a>
+                    <% } else { %>
+                        <a href="/login" style="display:inline ; font-size: 15px;" class="user_name">로그인하기</a>
+                    <% } %>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="주제 채팅">
+    <meta name="description" content="이곳에서 원하는 카테고리 채널에 입장하여 관심있는것들을 많은 사람들과 대화해보세요!">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주제 채팅</title>
+</head>
+<style>
+    .body {
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+<body>
+    <header><%- include('head.ejs') %></header>
+    <div class="body">
+        <h1>주제 채팅</h1>
+        <h2>카테고리형 채널망</h2>
+        <% for (let i=0; i<link_list.length; i++) { %>
+            <a style="font-size:20px; margin-top:5px; text-decoration: none;" href="<%= link_list[i] %>" ><%= title[link_list[i]] %></a>
+        <% } %>
+    </div>
+</body>
+</html>
